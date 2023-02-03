@@ -1,0 +1,87 @@
+*10LPP_V1.1.2.0_Cell_template_star.cmd
+*gate level StarRC commands
+*STARRC_RECOMMENDED_VERSION J-2014.12-SP3-3
+*Kit Version : S00-V1.1.2.0
+
+************************************
+* Star_RCXT command file sample
+* <> means the recommendded option
+************************************
+
+****** ICC to StarRC flow **********
+*BLOCK:
+*MILKYWAY_DATABASE:
+*MILKYWAY_CELL_VIEW: *
+*SKIP_CELLS: *
+
+****** ICC2 to StarRC flow *********
+*BLOCK: AN11Q
+*NDM_DATABASE: ../../10_inputs/HCPU_plover_cpu_noram0.nlib
+*NDM_DESIGN_VIEW: *
+*SKIP_CELLS: *
+*NDM_SEARCH_PATH:
+
+****** DEF to StarRC flow **********
+BLOCK: HCPU_plover_cpu_noram0
+LEF_FILE: __TECH_LEF__
+LEF_FILE: __CELL_LEF__ (../../10_inputs/DESIGN.lef)
+
+**
+LEF_FILE: __LVT_LEF__
+LEF_FILE: __RVT_LEF__
+
+** sub block lef
+*LEF_FILE: ../../10_inputs/DESIGN.pnr.lef
+TOP_DEF_FILE: ../../10_inpuits/DESIGN.def.gz
+LEF_USE_OBS: YES
+*************************************
+* Star-RCXT commands required to reflect fill gds
+*METAL_FILL_GDS_FILE: ../../10_inputs/DESIGN-merged.gds
+*METAL_FILL_POLYGON_HANDLING: IGNORE
+*GDS_LAYER_MAP_FILE: DK_VER_PATH/20_tech/nxtgrd/...../METAL_STACK.dummy.map
+*************************************
+
+TCAD_GRD_FILE: DK_VER_PATH/star/xxx/ ;# (.nxtgrd?)
+MAPPING_FILE: DK_VER_PATH/star/xxx_cell.map
+OPERATING_TEMPERATURE: TEMPERATURE
+
+EXTRACTION:             RC
+*MODE:                  400
+COUPLE_TO-GROUND:       NO
+COUPING_ABS_THRESHOLD:  1e-15
+COUPLING_REL_THRESHOLD: 0.01
+
+EXTRACT_VIA_CAPS:       YES
+
+*SPICE_SUBCKT_FILE: <circuit file>
+
+NETLIST_FILE:               ../../30_outputs/SPEF_FILE
+NETLIST_FORMAT:             spef
+NETLIST_COMPRESS_COMMAND:   gzip -f
+NETLIST_INPUT_DRIVERS:      YES
+NETLIST_CONNECT_OPENS:      *
+
+** *** for bridging fault
+** COUPLING_REPORT_NUMBER:  2905915
+** COUPLING_REPORT_FILE:    ./AN11Q_coupling.rpt
+
+
+** REDUCTION:           NO_EXTRA_LOOPS
+REDUCTION:              LAYER_NO_EXTRA_LOOPS
+** added 7nm tech for global variation
+EXTRA_GEOMETRY_INFO:    NODE
+NETLIST_NODE_SECTION:   YES
+NETLIST_TAIL_COMMENTS:  YES
+KEEP_VIA_NODES:         YES
+
+REFERENCE_DIRECTION:    VERTICAL
+
+REDUCTION_MAX_DELAY_ERROR: 1e-14
+
+DPT: YES
+*=> If DPT corner is used, this command needs to be set to YES.
+
+REMOVE_DANGLING_NETS:   YES
+
+*DP_NETLISTING: YES|NO
+NUM_CORES: 8

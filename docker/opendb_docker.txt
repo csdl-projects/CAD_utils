@@ -1,0 +1,8 @@
+docker run --network host --gpus all -it -v /home/jslee/projects/PlacementGen:/home/projects/PlacementGen openroad/ubuntu20-dev:latest bash
+
+apt-get update
+apt-get install -y vim git python3 python3-pip libboost-all-dev swig bison tcl tk
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+pip3 install matplotlib spicy wandb
+
+apt-get install 
